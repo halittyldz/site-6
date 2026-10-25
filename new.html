@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Guard - Exclusive Truck Parts</title>
+    <!-- Importing Inter font for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. BASE SETTINGS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* --- 2. HEADER STYLES --- */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background-color 0.4s ease, border-bottom 0.4s ease, padding 0.4s ease;
+            z-index: 1000;
+        }
+
+        /* Scrolled Header State */
+        .site-header.scrolled {
+            background-color: #050510;
+            border-bottom: 1px solid transparent;
+            padding: 12px 5%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .brand-logo {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 900;
+            text-decoration: none;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-logo .yellow-text {
+            color: #ffeb00;
+        }
+        
+        .brand-logo .subtitle {
+            font-size: 10px;
+            color: #aaaaaa;
+            letter-spacing: 1.5px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* --- DROPDOWN STYLES --- */
+        .brands-dropdown-wrapper {
+            position: relative;
+        }
+
+        .brands-dropdown-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 25px;
+            color: #ffffff;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .yellow-circle-icon {
+            background-color: #ffeb00;
+            color: #000;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Active/Hover State for Dropdown Button: Border turns yellow, text stays white */
+        .brands-dropdown-btn.active,
+        .brands-dropdown-btn:hover {
+            border-color: #ffeb00;
+            color: #ffffff;
+            background: transparent;
+        }
+
+        /* The Dropdown Menu */
+        .brands-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 0;
+            width: 220px;
+            background-color: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            z-index: 1001;
+            padding: 8px 0;
+        }
+
+        /* Show Class (toggled via JS) */
+        .brands-dropdown-menu.show {
+            display: flex;
+        }
+
+        .dropdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            color: #000000;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .dropdown-item .arrow {
+            color: #999999;
+            font-size: 16px;
+            font-weight: normal;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        /* --- SUBMENU STYLES (DAF FLYOUT) --- */
+        .dropdown-item-container { 
+            position: relative; 
+        }
+        
+        .submenu-panel {
+            position: absolute;
+            top: -8px; /* Aligns with the top of the parent menu */
+            left: 100%; /* Positions it directly to the right */
+            width: 220px;
+            background-color: #ffffff;
+            box-shadow: 4px 4px 15px rgba(0,0,0,0.1);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            border-radius: 4px;
+            padding: 8px 0;
+            border-left: 1px solid #f0f0f0;
+        }
+
+        .submenu-header {
+            padding: 12px 20px;
+            font-weight: 900;
+            font-size: 15px;
+            color: #000;
+            text-transform: uppercase;
+        }
+        
+        /* Reveal submenu on hover */
+        .dropdown-item-container:hover .submenu-panel { 
+            display: flex; 
+        }
+        
+        /* Hover state modifications for the "DAF" parent item */
+        .dropdown-item-container:hover > .dropdown-item {
+            background-color: #f0f0f0;
+        }
+        .dropdown-item-container:hover > .dropdown-item span:first-child { 
+            color: #000000; /* Ensure text stays black */
+        }
+        /* Arrow becomes yellow circle with black arrow */
+        .dropdown-item-container:hover > .dropdown-item .arrow {
+            background-color: #ffeb00;
+            color: #000000;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Navigation Links */
+        .main-nav { 
+            display: flex; 
+            gap: 25px; 
+            /* NEW: Locks the menu to the exact center of the screen */
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #ffeb00;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        .action-item {
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .action-item:hover {
+            opacity: 0.7;
+        }
+
+        .shopping-cart-container {
+            background-color: #ffffff;
+            color: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .shopping-cart-container:hover {
+            transform: scale(1.05);
+        }
+
+        .cart-notification-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: #ffeb00;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #050510;
+        }
+
+        /* --- 3. HERO SECTION --- */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            /* Placeholder truck background */
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('slider-1.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+        }
+
+        .hero-content {
+            max-width: 650px;
+            margin-top: 60px; 
+        }
+
+        .hero-headline {
+            color: #ffffff;
+            font-size: 56px;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .primary-button:hover {
+            border-color: #ffeb00;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- 4. HERO BOTTOM LINKS --- */
+        
+
+        /* --- 5. BRANDS CAROUSEL SECTION --- */
+        .brands-section {
+            padding: 80px 10%;
+            background-color: #ffffff;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #000;
+            font-weight: 700;
+        }
+        
+        .view-all-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #000;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .view-all-link:hover {
+            opacity: 0.7;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .carousel-viewport {
+            width: 100%;
+            overflow: hidden;
+            padding: 10px 0;
+        }
+
+        .brands-track {
+            display: flex;
+            gap: 15px;
+            width: max-content;
+        }
+
+        .brand-card {
+            min-width: 180px; 
+            flex-shrink: 0; 
+            height: 70px;
+            background-color: #050510;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .brand-card:hover {
+            background-color: #1a1a2e;
+            transform: translateY(-2px);
+        }
+
+        .carousel-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 35px;
+            height: 35px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 18px;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .carousel-nav-btn:hover {
+            background-color: #f5f5f5;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .prev-btn { left: -17px; }
+        .next-btn { right: -17px; }
+
+        /* --- 6. POPULAR & NEW PRODUCTS SECTION --- */
+        .products-section {
+            padding: 20px 10% 80px;
+            background-color: #ffffff; /* Adjusted to blend */
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+        /* Hover Overlay */
+        .hover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30, 30, 40, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-card:hover .hover-overlay {
+            opacity: 1;
+        }
+
+        .btn-heart {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: #000000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease;
+        }
+
+        .btn-expand {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 44px;
+            height: 44px;
+            background-color: #111118;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-heart:hover, .btn-expand:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-view-product {
+            background-color: #ffeb00;
+            color: #000000;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .btn-view-product:hover {
+            transform: scale(1.05);
+            background-color: #ffd700;
+        }
+
+        .product-title {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: normal;
+            color: #333;
+        }
+
+        /* --- 7. FEATURED PRODUCT SECTION --- */
+        .featured-product-section {
+            padding: 80px 10%;
+            background-color: #ffffff;
+        }
+
+        .featured-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .badge-new {
+            background-color: #ffeb00;
+            color: #000000;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .featured-divider {
+            width: 100%;
+            height: 1px;
+            background-color: #000000;
+            border: none;
+            margin-bottom: 25px;
+        }
+
+        .featured-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #000000;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .featured-desc {
+            font-size: 15px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .btn-featured-view {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #d1d5db;
+            background-color: transparent;
+            padding: 8px 10px 8px 24px;
+            border-radius: 30px;
+            color: #000000;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-featured-view:hover {
+            border-color: #000000;
+            transform: translateY(-2px);
+        }
+
+        .icon-circle-arrow {
+            background-color: #050510;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .featured-images-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .featured-image-wrapper {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        .featured-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .featured-image-wrapper:hover img {
+            transform: scale(1.05);
+        }
+
+        /* --- 8. NEW PRODUCTS BOTTOM BUTTON --- */
+        .btn-container-center {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .btn-dark-navy {
+            background-color: #1a2a47;
+            color: #ffffff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-dark-navy:hover {
+            background-color: #0f192b;
+            transform: translateY(-2px);
+        }
+
+        /* --- 4. FOOTER STYLES --- */
+        .site-footer { background-color: #050510; color: #ffffff; padding: 60px 10% 80px; }
+        .footer-top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 40px; }
+        .footer-logo-wrapper { display: flex; flex-direction: column; align-items: flex-start; }
+        .footer-top .brand-logo { font-size: 28px; font-weight: 700; color: #fff; text-decoration: none; line-height: 1; }
+        .footer-top .brand-logo .yellow-text { color: #ffeb00; }
+        .footer-badge { background: #555; color: #fff; font-size: 10px; padding: 3px 10px; border-radius: 12px; margin-top: 8px; font-weight: 800; letter-spacing: 0.5px; }
+
+        .newsletter-section p { font-size: 14px; font-weight: 600; margin-bottom: 15px; }
+        .newsletter-form { display: flex; align-items: center; gap: 15px; }
+        .newsletter-form input { background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 0; width: 300px; outline: none; font-size: 14px; transition: 0.3s; }
+        .newsletter-form input:focus { border-bottom-color: #ffeb00; }
+        .newsletter-form button { background: transparent; border: 1px solid #fff; color: #fff; border-radius: 25px; padding: 6px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; transition: 0.3s; }
+        .newsletter-form button:hover { border-color: #ffeb00; }
+        .newsletter-form button span { background: #ffeb00; color: #000; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+
+        .footer-bottom { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+        .footer-contact p { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; font-size: 14px; color: #ffffff; line-height: 1.5; }
+        .footer-contact p i { font-size: 18px; margin-top: 2px; width: 20px; text-align: center; }
+        .footer-socials { display: flex; gap: 20px; margin-top: 30px; }
+        .footer-socials a { color: #ffeb00; font-size: 18px; text-decoration: none; transition: 0.2s; }
+        .footer-socials a:hover { opacity: 0.8; transform: scale(1.1); }
+
+        .footer-links h4 { font-size: 16px; margin-bottom: 25px; font-weight: 600; color: #ffffff; }
+        .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 15px; padding: 0; }
+        .footer-links a { color: #ffffff; text-decoration: none; font-size: 14px; transition: 0.2s; }
+        .footer-links a:hover { color: #ffeb00; }
+        
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .product-grid { grid-template-columns: 1fr; gap: 40px; }
+            .footer-bottom { grid-template-columns: 1fr 1fr; }
+            .footer-top { flex-direction: column; align-items: flex-start; gap: 30px; }
+        }
+        @media (max-width: 600px) {
+            .footer-bottom { grid-template-columns: 1fr; }
+            .newsletter-form { flex-direction: column; align-items: flex-start; }
+            .newsletter-form input { width: 100%; }
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 1024px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .featured-layout { grid-template-columns: 1fr; gap: 40px; }
+            .footer-bottom { grid-template-columns: 1fr 1fr; }
+            .footer-top { flex-direction: column; align-items: flex-start; gap: 30px; }
+        }
+        @media (max-width: 600px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .footer-bottom { grid-template-columns: 1fr; }
+            .newsletter-form { flex-direction: column; align-items: flex-start; }
+            .newsletter-input { width: 100%; }
+        }
+        /* --- 10. MOBILE MENU & ACCORDION --- */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            flex-direction: column;
+            gap: 5px;
+            margin-left: 15px;
+            z-index: 2000;
+            position: relative;
+        }
+
+        .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active .bar:nth-child(2) { opacity: 0; }
+        .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        .mobile-menu-panel {
+            position: fixed;
+            top: 0;
+            right: -100%; 
+            width: 300px;
+            max-width: 100vw;
+            height: 100vh;
+            background-color: #050510;
+            z-index: 1500;
+            padding-top: 100px;
+            transition: right 0.4s ease-in-out;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .mobile-menu-panel.open {
+            right: 0;
+        }
+
+        .mobile-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            padding: 0 30px 50px 30px;
+            gap: 20px;
+        }
+
+        .mobile-accordion-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .mobile-accordion-menu {
+            list-style: none;
+            padding-left: 15px;
+            display: none; 
+            flex-direction: column;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .mobile-accordion-menu.open { display: flex; }
+
+        .sub-accordion {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .sub-accordion-btn {
+            background: none;
+            border: none;
+            color: #cccccc;
+            font-size: 16px;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .sub-accordion-btn:hover { color: #ffffff; }
+        
+        .sub-accordion-menu {
+            list-style: none;
+            padding-left: 15px;
+            display: none; 
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 10px;
+            border-left: 1px solid rgba(255, 235, 0, 0.3); 
+        }
+
+        .sub-accordion-menu.open { display: flex; }
+        
+        .sub-accordion-menu a {
+            font-size: 14px;
+            color: #999999;
+            padding-left: 10px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1024px) {
+            .hamburger { display: flex; }
+            .brands-dropdown-wrapper { display: none; } 
+            .main-nav { display: none; } 
+            .header-actions .action-item { display: none; } 
+        }
+        /* --- Mobile Regular Links (Updated to match Brands) --- */
+        .mobile-divider {
+            height: 1px;
+            background-color: rgba(255, 235, 0, 0.5); /* Yellow accent line */
+            margin: 10px 0;
+        }
+
+        .mobile-nav-link {
+            color: #ffffff;
+            font-size: 15px; /* Matches the brand font size */
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            padding: 15px 0; /* Matches the brand padding */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Matches the brand underline */
+            font-family: 'Inter', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .mobile-nav-link:hover {
+            color: #ffeb00;
+        }
+
+        /* --- BRAND LOGO IMAGE --- */
+        .site-logo-img {
+            height: 50px; /* Adjust this number to make it bigger or smaller */
+            width: auto;
+            display: block;
+        }
+
+        /* Slightly smaller logo on mobile phones */
+        @media (max-width: 1024px) {
+            .site-logo-img {
+                height: 40px; 
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+   <div id="header-placeholder"></div>
+
+    <!-- Hero Image Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-headline">Msc güneşlik ile tırınızı baştan yaratın.</h1>
+            <a href="all-brands.html" class="primary-button">
+                Ürünlerimizi görüntüleyin
+                <span class="yellow-circle-icon">→</span>
+            </a>
+        </div>
+
+        
+    </section>
+
+    <!-- Brands Carousel Section -->
+    <section class="brands-section">
+        <div class="section-header">
+            <h2 class="section-title">Markalar</h2>
+            <a href="all-brands.html" class="view-all-link">
+                Tümünü görüntüle 
+                <span class="yellow-circle-icon">→</span>
+            </a>
+        </div>
+
+        <div class="carousel-wrapper">
+            <!-- Left Arrow -->
+            <button class="carousel-nav-btn prev-btn" id="btnLeft" aria-label="Scroll left">‹</button>
+            
+            <!-- Viewport for hidden overflow -->
+            <div class="carousel-viewport">
+                <!-- Scrolling Track of Brands -->
+                <div class="brands-track" id="brandsTrack">
+                    <a href="volvo.html" class="brand-card">Volvo</a>
+                    <a href="daf.html" class="brand-card">DAF</a>
+                    <a href="iveco.html" class="brand-card">Iveco</a>
+                    <a href="man.html" class="brand-card">MAN</a>
+                    <a href="mercedes-benz.html" class="brand-card">Mercedes-Benz</a>
+                    <a href="renault.html" class="brand-card">Renault</a>
+                    <a href="scania.html" class="brand-card">Scania</a>
+                    <a href="ford.html" class="brand-card">Ford</a>
+                    <a href="volvo.html" class="brand-card">Volvo</a>
+                    <a href="daf.html" class="brand-card">DAF</a>
+                    <a href="iveco.html" class="brand-card">Iveco</a>
+                    <a href="man.html" class="brand-card">MAN</a>
+                    <a href="ford.html" class="brand-card">Ford</a>
+                </div>
+            </div>
+
+            <!-- Right Arrow -->
+            <button class="carousel-nav-btn next-btn" id="btnRight" aria-label="Scroll right">›</button>
+        </div>
+    </section>
+
+    <!-- Popular Products Section -->
+    <section class="products-section">
+        <div class="section-header">
+            <h2 class="section-title">Popüler Ürünler</h2>
+            <a href="#" class="view-all-link">
+                Tümünü görüntüle
+                <span class="yellow-circle-icon">→</span>
+            </a>
+        </div>
+
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <!-- Product 1 -->
+            <a href="product.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="asdad.webp">
+                    <div class="hover-overlay">
+                        <div class="btn-heart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+                        <div class="btn-view-product">Ürünü Görüntüle <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                        <div class="btn-expand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></div>
+                    </div>
+                </div>
+                <h3 class="product-title">Mercedes-Benz Actros Pro Cabin Sunvisor Type 1</h3>
+                <span class="product-price">€695,00</span>
+            </a>
+            
+            <!-- Product 2 -->
+            <!-- Product 2 -->
+            <a href="product2.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="scania-next-generation-front-spoiler-air-suspensio.webp">
+                    <div class="hover-overlay">
+                        <div class="btn-heart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+                        <div class="btn-view-product"> Ürünü Görüntüle <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                        <div class="btn-expand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></div>
+                    </div>
+                </div>
+                <h3 class="product-title">Scania Next Generation Front Spoiler Air Suspension Low Bumper Type 5 Long</h3>
+                <span class="product-price">€495,00</span>
+            </a>
+
+            <!-- Product 3 -->
+            <a href="product3.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="sadfs.webp" alt="Volvo FH Aero">
+                    <div class="hover-overlay">
+                        <div class="btn-heart">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <div class="btn-view-product">
+                            Ürünü Görüntüle
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="btn-expand">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="product-title">Volvo FH Aero Sunvisor Type 4</h3>
+                <span class="product-price">€575,00</span>
+            </a>
+
+            <!-- Product 4 -->
+            <a href="product4.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="sfsdfs.webp" alt="DAF NGD">
+                    <div class="hover-overlay">
+                        <div class="btn-heart">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <div class="btn-view-product">
+                            Ürünü Görüntüle
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="btn-expand">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="product-title">DAF NGD XF/ XG/ XG+ Front Spoiler Type 1</h3>
+                <span class="product-price">€695,00</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Product Section -->
+    <section class="featured-product-section">
+        <div class="featured-layout">
+            <!-- Left Column: Content -->
+            <div class="featured-content">
+                <span class="badge-new">New</span>
+                <hr class="featured-divider" />
+                <h2 class="featured-title">Scania Next Generation sideskirt extension</h2>
+                <p class="featured-desc">
+                    Create a sleek, continuous line along the side of your truck with the Scania Next Generation side skirt extension. Specially developed for 4x2 wheelbases (262 cm) and perfectly matched to the original lines of the truck for a clean, factory look.
+                </p>
+                <a href="featuredproduct.html" class="btn-featured-view">
+                    View Product
+                    <span class="icon-circle-arrow">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+                    </span>
+                </a>
+            </div>
+
+            <!-- Right Column: Images Grid -->
+            <div class="featured-images-grid">
+                <div class="featured-image-wrapper">
+                    <img src="home_module_text_block_c_image_1.jpg" alt="Scania sideskirt red">
+                </div>
+                <div class="featured-image-wrapper">
+                    <img src="home_module_text_block_c_image_2.jpg" alt="Scania sideskirt white">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Products Section -->
+    <section class="products-section">
+        <div class="section-header">
+            <h2 class="section-title">Yeni Ürünler</h2>
+        </div>
+
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <a href="newproducts1.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="mercedes-benz-actros-pro-cabin-dirt-deflector.webp" alt="Mercedes-Benz Actros">
+                    <div class="hover-overlay">
+                        <div class="btn-heart">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <div class="btn-view-product">
+                            Ürünü Görüntüle
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="btn-expand">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="product-title">Mercedes-Benz Actros Pro cabin Dirt Deflector</h3>
+                <span class="product-price">€265,00</span>
+            </a>
+            
+            <!-- Product 2 -->
+            <a href="newproducts2.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="volvo-fh-aero-front-spoiler-type-2.webp" alt="Volvo Front Spoiler">
+                    <div class="hover-overlay">
+                        <div class="btn-heart">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <div class="btn-view-product">
+                            Ürünü Görüntüle
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="btn-expand">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="product-title">Volvo FH Aero Front Spoiler Type 2</h3>
+                <span class="product-price">€695,00</span>
+            </a>
+
+            <!-- Product 3 -->
+            <a href="newproducts3.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="volvo-fh-aero-dirt-deflector-v2.webp" alt="Volvo Dirt Deflector">
+                    <div class="hover-overlay">
+                        <div class="btn-heart">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <div class="btn-view-product">
+                            Ürünü Görüntüle
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="btn-expand">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="product-title">Volvo FH Aero Dirt Deflector V2</h3>
+                <span class="product-price">€295,00</span>
+            </a>
+
+            <!-- Product 4 -->
+            <a href="newproducts4.html" class="product-card">
+                <div class="product-image-container">
+                    <img src="daf-ngd-xf-xg-xg-front-spoiler-type-4.webp" alt="DAF NGD">
+                    <div class="hover-overlay">
+                        <div class="btn-heart">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <div class="btn-view-product">
+                            Ürünü Görüntüle
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                        <div class="btn-expand">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="product-title">DAF NGD XF/ XG/ XG+ Front Spoiler Type 4</h3>
+                <span class="product-price">€695,00</span>
+            </a>
+        </div>
+
+        <!-- View All Button -->
+        <div class="btn-container-center">
+            <a href="#" class="btn-dark-navy">Görüntüle &rarr;</a>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Interactive Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // 1. Load Header & Activate Header Scripts
+            fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+                
+                // Hamburger & Mobile Panel Logic
+                const hamburger = document.getElementById("hamburger-menu");
+                const mobileMenu = document.getElementById("mobile-menu-panel");
+                
+                if (hamburger && mobileMenu) {
+                    hamburger.addEventListener("click", function() {
+                        hamburger.classList.toggle("active");
+                        mobileMenu.classList.toggle("open");
+                    });
+                }
+
+                // Main "All Brands" Accordion Logic
+                const mobileBrandsBtn = document.getElementById("mobileBrandsBtn");
+                const mobileBrandsMenu = document.getElementById("mobileBrandsMenu");
+                
+                if (mobileBrandsBtn && mobileBrandsMenu) {
+                    mobileBrandsBtn.addEventListener("click", function() {
+                        mobileBrandsMenu.classList.toggle("open");
+                        const arrow = mobileBrandsBtn.querySelector('.mobile-arrow');
+                        if (arrow) {
+                            arrow.innerHTML = mobileBrandsMenu.classList.contains("open") ? "↑" : "↓";
+                        }
+                    });
+                }
+
+                // Nested Models Sub-Accordion Logic
+                const subAccordionBtns = document.querySelectorAll('.sub-accordion-btn');
+                subAccordionBtns.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const menu = this.nextElementSibling;
+                        menu.classList.toggle('open');
+                        const arrow = this.querySelector('.sub-arrow');
+                        if (arrow) {
+                            arrow.innerHTML = menu.classList.contains('open') ? "↑" : "↓";
+                        }
+                    });
+                });
+                
+                // Desktop Dropdown Logic
+                const dropdownBtn = document.getElementById("brandsDropdownBtn");
+                const dropdownMenu = document.getElementById("brandsDropdownMenu");
+                const dropdownIcon = document.getElementById("dropdownIcon");
+
+                if(dropdownBtn) {
+                    dropdownBtn.addEventListener("click", function(event) {
+                        event.stopPropagation(); 
+                        dropdownMenu.classList.toggle("show");
+                        dropdownBtn.classList.toggle("active");
+                        dropdownIcon.innerHTML = dropdownBtn.classList.contains("active") ? "↑" : "↓";
+                    });
+
+                    document.addEventListener("click", function(event) {
+                        if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                            dropdownMenu.classList.remove("show");
+                            dropdownBtn.classList.remove("active");
+                            dropdownIcon.innerHTML = "↓";
+                        }
+                    });
+                }
+
+                // Header Scroll Color Logic
+                const headerElement = document.getElementById("siteHeader");
+                if (headerElement) {
+                    window.addEventListener("scroll", function() {
+                        if (window.scrollY > 50) {
+                            headerElement.classList.add("scrolled");
+                        } else {
+                            headerElement.classList.remove("scrolled");
+                        }
+                    });
+                }
+            });
+
+            // 2. Load Footer
+            fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+
+            // 3. Endless Carousel Nav Logic (Homepage Specific)
+            const track = document.getElementById("brandsTrack");
+            const btnLeft = document.getElementById("btnLeft");
+            const btnRight = document.getElementById("btnRight");
+            let isAnimating = false;
+
+            if (btnLeft && btnRight && track) {
+                btnRight.addEventListener("click", function() {
+                    if (isAnimating) return;
+                    isAnimating = true;
+                    
+                    const firstCard = track.firstElementChild;
+                    const cardWidth = firstCard.offsetWidth;
+                    const gap = 15; 
+                    const scrollDistance = cardWidth + gap;
+
+                    track.style.transition = "transform 0.4s ease-in-out";
+                    track.style.transform = `translateX(-${scrollDistance}px)`;
+
+                    const transitionEndHandler = function() {
+                        track.style.transition = "none";
+                        track.style.transform = "translateX(0)";
+                        track.appendChild(track.firstElementChild); 
+                        track.removeEventListener("transitionend", transitionEndHandler);
+                        isAnimating = false;
+                    };
+                    track.addEventListener("transitionend", transitionEndHandler);
+                });
+
+                btnLeft.addEventListener("click", function() {
+                    if (isAnimating) return;
+                    isAnimating = true;
+
+                    const lastCard = track.lastElementChild;
+                    const cardWidth = lastCard.offsetWidth;
+                    const gap = 15;
+                    const scrollDistance = cardWidth + gap;
+
+                    track.style.transition = "none";
+                    track.prepend(track.lastElementChild);
+                    track.style.transform = `translateX(-${scrollDistance}px)`;
+
+                    void track.offsetWidth;
+
+                    track.style.transition = "transform 0.4s ease-in-out";
+                    track.style.transform = "translateX(0)";
+
+                    const transitionEndHandler = function() {
+                        track.style.transition = "none";
+                        track.removeEventListener("transitionend", transitionEndHandler);
+                        isAnimating = false;
+                    };
+                    track.addEventListener("transitionend", transitionEndHandler);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
